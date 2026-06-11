@@ -576,3 +576,7 @@ def test_ext03_output_format_selection():
 | EXT | Extension Requirement — 추가 요구 (P1) |
 | Test ID | `TEST-<요구ID>` — 요구와 1:1 대응하는 테스트 식별자 |
 | Traceability | PRD 요구 → pytest TC → green 여부까지 추적 가능한 관계 |
+
+
+
+# RED To-Do list
