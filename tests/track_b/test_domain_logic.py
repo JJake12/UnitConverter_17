@@ -30,9 +30,13 @@ def test_d_cnv_02_convert_all_2_5_meter_to_feet(registry):
 @pytest.mark.test_id("D-CNV-03")
 def test_d_cnv_03_feet_to_yard_via_meter_consistency(registry):
     """Given: feet → yard → Then: meter 경유 일치"""
-    # Given: registry with default units
-    # When: UnitConverter(registry).convert_all(ParsedInput(unit="feet", value=1.0))
-    pytest.fail("RED: D-CNV-03 — feet→yard conversion must match meter-based path")
+    converter = UnitConverter(registry)
+    results = converter.convert_all(ParsedInput(unit="feet", value=1.0))
+
+    by_unit = {r.target_unit: r.target_value for r in results}
+    meters = converter.to_meter(1.0, "feet")
+    yard_via_meter = meters / registry.get_meters_per_unit("yard")
+    assert by_unit["yard"] == pytest.approx(yard_via_meter)
 
 
 @pytest.mark.track_b
