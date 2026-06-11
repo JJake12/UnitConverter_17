@@ -43,15 +43,23 @@ def test_d_cnv_03_feet_to_yard_via_meter_consistency(registry):
 @pytest.mark.test_id("D-REG-01")
 def test_d_reg_01_register_cubit_convertible(registry):
     """Given: cubit 0.4572 m 등록 → Then: 변환 가능"""
-    # Given: registry.register("cubit", meters_per_unit=0.4572)
-    # When: UnitConverter(registry).convert_all(ParsedInput(unit="cubit", value=1.0))
-    pytest.fail("RED: D-REG-01 — register(cubit, 0.4572 m) must enable conversion")
+    registry.register("cubit", meters_per_unit=0.4572)
+    converter = UnitConverter(registry)
+    results = converter.convert_all(ParsedInput(unit="cubit", value=1.0))
+
+    by_unit = {r.target_unit: r.target_value for r in results}
+    assert "cubit" in by_unit
+    assert by_unit["meter"] == pytest.approx(0.4572)
 
 
 @pytest.mark.track_b
 @pytest.mark.test_id("D-CFG-01")
-def test_d_cfg_01_load_json_corrupted_file_config_error(registry):
+def test_d_cfg_01_load_json_corrupted_file_config_error(registry, tmp_path):
     """Given: 깨진 JSON 파일 → Then: ConfigError"""
-    # Given: corrupted JSON config file path
-    # When: registry.load_from_file(path)
-    pytest.fail("RED: D-CFG-01 — corrupted JSON config must raise ConfigError")
+    from unit_converter.exceptions import ConfigError
+
+    bad_config = tmp_path / "bad.json"
+    bad_config.write_text("{invalid", encoding="utf-8")
+
+    with pytest.raises(ConfigError):
+        registry.load_from_file(str(bad_config))
