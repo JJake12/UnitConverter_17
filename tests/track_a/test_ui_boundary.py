@@ -33,9 +33,13 @@ def test_u_in_02_missing_colon_format_error():
 @pytest.mark.test_id("U-IN-03")
 def test_u_in_03_negative_value_rejected():
     """Given: ['meter:-10'] → Then: status=fail, failed_lines 포함"""
-    # Given: grid = ["meter:-10"]
-    # When: validate_lines(grid)
-    pytest.fail("RED: U-IN-03 — negative value must produce status=fail with failed_lines")
+    grid = ["meter:-10"]
+
+    result = validate_lines(grid)
+
+    assert result["status"] == "fail"
+    assert len(result["failed_lines"]) >= 1
+    assert result["failed_lines"][0]["line"] == "meter:-10"
 
 
 @pytest.mark.track_a

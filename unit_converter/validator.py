@@ -27,6 +27,18 @@ def validate_lines(grid: list[str]) -> dict:
 
         if " = " not in line and ":" not in line:
             failed_lines.append({"index": index, "line": line})
+            continue
+
+        if " = " not in line:
+            _, value_str = line.split(":", 1)
+            try:
+                value = float(value_str.strip())
+            except ValueError:
+                failed_lines.append({"index": index, "line": line})
+                continue
+
+            if value < 0:
+                failed_lines.append({"index": index, "line": line})
 
     if failed_lines:
         return {"status": "fail", "failed_lines": failed_lines}
