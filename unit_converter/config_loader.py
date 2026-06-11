@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+from unit_converter.exceptions import ConfigError
 from unit_converter.registry import UnitRegistry
 
 
@@ -13,7 +14,10 @@ class ConfigLoader:
         suffix = file_path.suffix.lower()
 
         if suffix == ".json":
-            data = json.loads(file_path.read_text(encoding="utf-8"))
+            try:
+                data = json.loads(file_path.read_text(encoding="utf-8"))
+            except json.JSONDecodeError as exc:
+                raise ConfigError(f"Invalid JSON config: {file_path}") from exc
         elif suffix in (".yaml", ".yml"):
             try:
                 import yaml
