@@ -8,6 +8,9 @@ class UnitConverter:
     def __init__(self, registry: UnitRegistry) -> None:
         self._registry = registry
 
+    def to_meter(self, value: float, unit: str) -> float:
+        return value * self._registry.get_meters_per_unit(unit)
+
     def convert_all(self, parsed: ParsedInput) -> list[ConversionResult]:
         meters = parsed.value * self._registry.get_meters_per_unit(parsed.unit)
         results: list[ConversionResult] = []
