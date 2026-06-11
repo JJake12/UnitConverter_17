@@ -21,9 +21,12 @@ def test_u_in_01_empty_input_format_error():
 @pytest.mark.test_id("U-IN-02")
 def test_u_in_02_missing_colon_format_error():
     """Given: ['meter'] → Then: status=fail (콜론 없음)"""
-    # Given: grid = ["meter"]
-    # When: validate_lines(grid)
-    pytest.fail("RED: U-IN-02 — input without colon must produce status=fail")
+    grid = ["meter"]
+
+    result = validate_lines(grid)
+
+    assert result["status"] == "fail"
+    assert result["failed_lines"][0]["line"] == "meter"
 
 
 @pytest.mark.track_a

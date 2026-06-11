@@ -23,6 +23,10 @@ def validate_lines(grid: list[str]) -> dict:
     for index, line in enumerate(grid):
         if line == "":
             failed_lines.append({"index": index, "line": line})
+            continue
+
+        if " = " not in line and ":" not in line:
+            failed_lines.append({"index": index, "line": line})
 
     if failed_lines:
         return {"status": "fail", "failed_lines": failed_lines}
