@@ -1,4 +1,8 @@
+import re
+
 from unit_converter.exceptions import UnknownUnitError, ValidationError
+
+_OUTPUT_LINE = re.compile(r"^\d+(\.\d+)? \w+ = \d+(\.\d+)? \w+$")
 from unit_converter.models import ParsedInput
 from unit_converter.registry import UnitRegistry
 
@@ -42,5 +46,8 @@ def validate_lines(grid: list[str]) -> dict:
 
     if failed_lines:
         return {"status": "fail", "failed_lines": failed_lines}
+
+    if len(grid) >= 3 and all(_OUTPUT_LINE.match(line) for line in grid):
+        return {"status": "pass", "failed_lines": []}
 
     return {"status": "incomplete", "failed_lines": []}

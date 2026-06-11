@@ -46,10 +46,13 @@ def test_u_in_03_negative_value_rejected():
 @pytest.mark.test_id("U-OUT-01")
 def test_u_out_01_meter_2_5_outputs_three_or_more_lines():
     """Given: 3줄 이상 변환 출력 → Then: status=pass"""
-    # Given: grid = [
-    #     "2.5 meter = 8.2 feet",
-    #     "2.5 meter = 2.7 yard",
-    #     "2.5 meter = 2.5 meter",
-    # ]
-    # When: validate_lines(grid)
-    pytest.fail("RED: U-OUT-01 — 3 or more conversion output lines must return status=pass")
+    grid = [
+        "2.5 meter = 8.2 feet",
+        "2.5 meter = 2.7 yard",
+        "2.5 meter = 2.5 meter",
+    ]
+
+    result = validate_lines(grid)
+
+    assert result["status"] == "pass"
+    assert result["failed_lines"] == []
