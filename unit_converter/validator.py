@@ -15,3 +15,16 @@ class InputValidator:
 
         if not self._registry.has_unit(parsed.unit):
             raise UnknownUnitError(f"Unknown unit: {parsed.unit}")
+
+
+def validate_lines(grid: list[str]) -> dict:
+    failed_lines: list[dict] = []
+
+    for index, line in enumerate(grid):
+        if line == "":
+            failed_lines.append({"index": index, "line": line})
+
+    if failed_lines:
+        return {"status": "fail", "failed_lines": failed_lines}
+
+    return {"status": "incomplete", "failed_lines": []}
