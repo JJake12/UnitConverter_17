@@ -1,35 +1,11 @@
-def main():
-    input_str = input("Insert value for converting (ex: meter:2.5): ")
+from unit_converter.app import Application
+from unit_converter.registry import UnitRegistry
 
-    if ':' not in input_str:
-        print("Invalid format. Use unit:value (ex: meter:2.5)")
-        return
 
-    unit, value_str = input_str.split(':', 1)
-
-    try:
-        value = float(value_str)
-    except ValueError:
-        print(f"Invalid number: {value_str}")
-        return
-
-    if unit == "meter":
-        meter_value = value
-    elif unit == "feet":
-        meter_value = value / 3.28084
-    elif unit == "yard":
-        meter_value = value / 1.09361
-    else:
-        print(f"Unknown unit: {unit}")
-        return
-
-    in_meters = meter_value
-    in_feet = meter_value * 3.28084
-    in_yards = meter_value * 1.09361
-
-    print(f"{value} {unit} = {in_meters} meter")
-    print(f"{value} {unit} = {in_feet} feet")
-    print(f"{value} {unit} = {in_yards} yard")
+def main() -> None:
+    registry = UnitRegistry.default()
+    app = Application(registry=registry)
+    app.run()
 
 
 if __name__ == "__main__":
